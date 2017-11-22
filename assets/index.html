@@ -1,0 +1,26 @@
+<div id="app">
+    <select v-model="level">
+        <option disabled value="-1">Выберите уровень</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+    </select>
+
+    <button @click="startGame" :disabled="level < 1">Новая игра</button>
+
+
+    <img :src="image" v-if="image" />
+
+    <select v-model="name" v-if="names.length" :disabled="!image">
+        <option disabled value="">Выберите имя</option>
+        <option v-for="name in names">
+            {{ name }}
+        </option>
+    </select>
+
+    <button @click="finishGame" :disabled="name.length == 0">Закончить</button>
+
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="/app.js"></script>
