@@ -1,26 +1,79 @@
-<div id="app">
-    <select v-model="level">
-        <option disabled value="-1">Выберите уровень</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-    </select>
+<!DOCTYPE html>
+<html>
 
-    <button @click="startGame" :disabled="level < 1">Новая игра</button>
+<head>
+    <title>Guess Who game</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://unpkg.com/bootstrap@4.0.0-beta.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
+<body>
+    <div id="app" class="container">
+        <h1>Угадай человека</h1>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card border-dark mb-3">
+                    <div class="card-header">Настройки игры</div>
+                    <div class="list-group list-group-flush">
+                        <button v-for="level in levels" type="button" class="list-group-item list-group-item-action" :class="{ active: level == selectedLevel }"
+                            @click="selectLevel(level)">
+                            {{ level.name }}
+                        </button>
+                    </div>
+                    <div class="card-body text-dark">
+                        <button class="btn btn-outline-primary" @click="startGame" :disabled="!selectedLevel">Новая игра</button>
+                    </div>
+                </div>
+            </div>
 
-    <img :src="image" v-if="image" />
+            <div class="col-sm-4">
+                <div class="card mb-3">
+                    <img class="card-img-top" :src="image" v-if="image" />
+                </div>
+            </div>
 
-    <select v-model="name" v-if="names.length" :disabled="!image">
-        <option disabled value="">Выберите имя</option>
-        <option v-for="name in names">
-            {{ name }}
-        </option>
-    </select>
+            <div class="col-sm-4">
+                <div class="card border-dark mb-3">
+                    <div class="card-header">Подтверждение</div>
+                    <div class="card-body text-dark">
+                        <div class="form-group">
+                            <select class="form-control" v-model="selectedName" :disabled="!gameId">
+                                <option disabled value="undefined">Выберите имя</option>
+                                <option v-for="name in names">
+                                    {{ name }}
+                                </option>
+                            </select>
+                        </div>
 
-    <button @click="finishGame" :disabled="name.length == 0">Закончить</button>
+                        <button class="btn btn-outline-danger" @click="finishGame" :disabled="!selectedName">Проверить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-</div>
+        <div id="resultModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ game.result ? "Правильно!" : "Неправильно!" }}</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Это был: {{ game.name }}</p>
+                        <img :src="image" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Окей</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script src="https://unpkg.com/vue"></script>
-<script src="/app.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/jquery"></script>
+    <script src="https://unpkg.com/bootstrap@4.0.0-beta.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/app.js"></script>
+</body>
+
+</html>

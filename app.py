@@ -49,9 +49,9 @@ def finishGame(gameId, name):
     game = games[gameId]
 
     if game['name'].strip() == name:
-        return jsonify(True)
+        return jsonify({'result': True, 'name': game['name']})
     else:
-        return jsonify(False)
+        return jsonify({'result': False, 'name': game['name']})
 
 
 if __name__ == '__main__':
